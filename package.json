@@ -1,0 +1,18 @@
+{
+  "name": "progect12",
+  "version": "0.0.1",
+  "description": "progect how to make server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Maksim Shumeyko",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
+    "eslint": "^7.8.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-react": "^7.20.6"
+  }
+}
