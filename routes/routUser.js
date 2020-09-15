@@ -5,29 +5,33 @@ const { findUser, readFiles } = require('../helpers/helpers.js');
 // на запрос '/users' в ответ отправляется массив в формате .json
 
 routUser.get('/users', async (req, res) => {
+// const x = readFiles('user.json');
 
   try {
      // ждём пока файл будет прочитан
-     const data = await readFiles('user.json');
+     const objectUsers = await readFiles('user.json');
+     const dataUsers = JSON.parse(objectUsers)
      // отправляем его
-     res.send(data);
+     res.send(dataUsers);
    } catch(err) {
      // а если наш код упал, то возвращаем 500
-     res.status(500).send({ message: err.message });
+     res.status(500).send({ message: err.message  });
    }
 
  });
 
  routUser.get('/users/:id', async (req, res) => {
   try{
-const nameStream = await readFiles('user.json');
+    const data = await readFiles('user.json');
+    const dataFiles = JSON.parse(data)
+//const nameStream = await readFiles('user.json');
 
- if (!findUser(nameStream, [req.params.id])) {
-        res.status(404).send({ Error: 'Нет пользователя с таким id' });
+ if (!findUser(dataFiles, [req.params.id])) {
+        res.status(404).send({ message: 'Нет пользователя с таким id' });
         return;
       } else {
 
-res.send(findUser(nameStream, [req.params.id]));
+res.send(findUser(dataFiles, [req.params.id]));
 }
 
 

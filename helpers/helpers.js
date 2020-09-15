@@ -11,7 +11,7 @@ const readFiles = (fileName) => {
           reject(err);
         } else {
           // при JSON.parse() так же может возникнуть ошибка, если сам json будет невалидным
-          resolve(JSON.parse(data));
+          resolve((data));
         }
       })
   })
@@ -22,7 +22,7 @@ const readFiles = (fileName) => {
 
 function findUser(arr, req) {
   return arr.find((item) => item._id === req.toString());
-  
+
 
 
 }
