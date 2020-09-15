@@ -1,38 +1,39 @@
 const routUser = require('express').Router();
 
-const { sendJsonfiles, findUser, readFiles } = require('../helpers/helpers.js');
+const { findUser, readFiles } = require('../helpers/helpers.js');
 
 // на запрос '/users' в ответ отправляется массив в формате .json
 
-routUser.get('/users', (req, res) => {
-  sendJsonfiles('user.json', res);
-  // в файле helpers есть фукции по чтению и обработке данных
-});
+routUser.get('/users', async (req, res) => {
 
-routUser.get('/users/:id', (req, res) => {
-  const nameStream = readFiles('user.json', res);
+  try {
+     // ждём пока файл будет прочитан
+     const data = await readFiles('user.json');
+     // отправляем его
+     res.send(data);
+   } catch(err) {
+     // а если наш код упал, то возвращаем 500
+     res.status(500).send({ message: err.message });
+   }
 
-  let userChunk = ''; // создаем пустой объект
+ });
 
-  nameStream.on('data', (data) => {
-    userChunk += data; // добавляем прочтенные данные в формате json
-  });
+ routUser.get('/users/:id', async (req, res) => {
+  try{
+const nameStream = await readFiles('user.json');
 
-  nameStream.on('end', () => {
-    const userChunkObject = JSON.parse(userChunk); // парсим в объект
+ if (!findUser(nameStream, [req.params.id])) {
+        res.status(404).send({ Error: 'Нет пользователя с таким id' });
+        return;
+      } else {
 
-    // Проверка, если запрашиваемого пользовотеля по данному id нет, то отправляется ответ
+res.send(findUser(nameStream, [req.params.id]));
+}
 
-    if (!findUser(userChunkObject, [req.params.id])) {
-      res.status(404).send({ message: 'Нет пользователя с таким id' });
 
-      // не забудем выйти из функции
-      return;
-    }
-
-    res.send(findUser(userChunkObject, [req.params.id]));
-    // берем функцию из helpers -> добавлем параметры и отпраляем пользователю
-  });
+} catch(err) {
+  res.status(500).send({ message: err.message });
+}
 });
 
 module.exports = routUser;
