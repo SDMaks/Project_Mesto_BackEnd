@@ -1,12 +1,14 @@
 module.exports = {
   env: {
     browser: true,
-    node: true,
+    commonjs: true,
+    es2020: true,
   },
-  extends: ['eslint:recommended', 'airbnb-base'],
+  extends: [
+    'airbnb-base',
+  ],
   parserOptions: {
-    ecmaVersion: 12,
-    sourceType: 'module',
+    ecmaVersion: 11,
   },
   rules: {
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
