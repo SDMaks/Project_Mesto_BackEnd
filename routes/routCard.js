@@ -1,15 +1,11 @@
 const routCard = require('express').Router();
 
-const { readFiles } = require('../helpers/helpers.js');
+const {
+  findCard, createCard, deleteCard,
+} = require('../controllers/cards');
 
-routCard.get('/cards', async (req, res) => {
-  try {
-    const cardsObject = await readFiles('cards.json');
-    const dataCards = JSON.parse(cardsObject);
-    res.send(dataCards);
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
-});
+routCard.get('/', findCard);
+routCard.post('/', createCard);
+routCard.delete('/:cardId', deleteCard);
 
 module.exports = routCard;
